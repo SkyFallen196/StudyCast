@@ -40,14 +40,20 @@ StudyCast/
 │   ├── schemas/           # Pydantic-схемы
 │   └── services/          # сопряжение устройств, синхронизация
 ├── tests/                 # тесты backend (pytest)
-├── tempPage/              # HTML-структура главной страницы (ЛР4)
+├── tempPage/              # главная страница: HTML (ЛР4) и CSS (ЛР5)
 ├── pyproject.toml         # проект uv
 └── uv.lock
 ```
 
 ## Запуск
 
-Главная страница (временная HTML-структура): открыть `tempPage/index.html` в браузере.
+Главная страница (HTML + CSS, ЛР4–5): открыть `tempPage/index.html` в браузере или запустить локальный сервер через uv:
+
+```bash
+uv run python -m http.server 8000 --directory tempPage
+```
+
+и открыть http://localhost:8000. Стили лежат в `tempPage/css/main.css`: токены из ТЗ, Flexbox и Grid, адаптивность на 768, 1024 и 1440 px, тёмная тема по системной настройке.
 
 Backend (пока только заготовка пакета):
 
