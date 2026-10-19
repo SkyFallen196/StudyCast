@@ -4,139 +4,159 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="StudyCast — поиск по собственным аудиозаписям лекций. Расшифровка прямо в браузере, без загрузки аудио на сервер.">
+  <meta name="color-scheme" content="light dark">
   <title>Библиотека — StudyCast</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержимому</a>
 
   <header class="site-header">
-    <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="StudyCast, на главную">StudyCast</a>
-      <nav aria-label="Основная навигация">
-        <ul class="nav-list">
-          <li><a href="index.html" aria-current="page">Библиотека</a></li>
+    <div class="container site-header__inner">
+      <a class="logo" href="index.html" aria-label="StudyCast, на главную">Study<span class="logo__accent">Cast</span></a>
+      <p class="sync-indicator">2 устройства</p>
+      <nav class="main-nav" aria-label="Основная навигация">
+        <ul class="main-nav__list">
+          <li><a class="main-nav__link" href="index.html" aria-current="page">Библиотека</a></li>
           <!-- Страницы devices.html, settings.html и record.html появятся вместе с React-приложением (FE-016, FE-034, FE-038) -->
-          <li><a href="devices.html">Устройства</a></li>
-          <li><a href="settings.html">Настройки</a></li>
+          <li><a class="main-nav__link" href="devices.html">Устройства</a></li>
+          <li><a class="main-nav__link" href="settings.html">Настройки</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main id="main" class="container">
+  <main id="main" class="container page">
     <section class="page-intro" aria-labelledby="page-title">
-      <h1 id="page-title">Библиотека</h1>
-      <p>Записи лекций и их расшифровки. Аудио хранится только на этом устройстве.</p>
-      <p><a class="button" href="#import">Импортировать запись</a></p>
+      <div class="page-intro__text">
+        <h1 id="page-title" class="page-intro__title">Библиотека</h1>
+        <p class="page-intro__lead">Записи лекций и их расшифровки. Аудио хранится только на этом устройстве.</p>
+      </div>
+      <p class="page-intro__actions"><a class="button button--primary" href="#import">Импортировать запись</a></p>
     </section>
 
     <div class="layout">
-      <div class="layout-main">
-        <section aria-labelledby="records-title">
-          <h2 id="records-title">Мои записи</h2>
+      <div class="layout__main">
+        <section class="records" aria-labelledby="records-title">
+          <h2 id="records-title" class="section-title">Мои записи</h2>
 
           <form class="search" role="search" action="#" method="get">
-            <label for="library-search">Поиск по записям</label>
-            <input id="library-search" name="q" type="search" placeholder="Название или слово из расшифровки">
-            <button type="submit">Найти</button>
+            <label class="search__label" for="library-search">Поиск по записям</label>
+            <input class="search__input" id="library-search" name="q" type="search" placeholder="Название или слово из расшифровки">
+            <button class="button button--secondary search__button" type="submit">Найти</button>
           </form>
 
           <ul class="record-list">
             <li>
               <article class="record-card" aria-labelledby="rec-1-title">
-                <header>
-                  <p class="record-course">Матанализ</p>
-                  <h3 id="rec-1-title"><a href="record.html?id=1">Лекция 7. Ряды Тейлора</a></h3>
+                <header class="record-card__header">
+                  <p class="record-card__course">Матанализ</p>
+                  <h3 id="rec-1-title" class="record-card__title"><a class="record-card__link" href="record.html?id=1">Лекция 7. Ряды Тейлора</a></h3>
                 </header>
                 <dl class="record-meta">
-                  <div><dt>Дата</dt><dd><time datetime="2026-10-07">07.10.2026</time></dd></div>
-                  <div><dt>Длительность</dt><dd><time datetime="PT14M52S">14:52</time></dd></div>
-                  <div><dt>Закладки</dt><dd>2</dd></div>
+                  <div class="record-meta__item"><dt>Дата</dt><dd><time datetime="2026-10-07">07.10.2026</time></dd></div>
+                  <div class="record-meta__item"><dt>Длительность</dt><dd><time datetime="PT14M52S">14:52</time></dd></div>
+                  <div class="record-meta__item"><dt>Закладки</dt><dd>2</dd></div>
                 </dl>
-                <p class="record-status">Статус: распознано · синхронизировано</p>
+                <p class="record-card__status">
+                  <span class="visually-hidden">Статус:</span>
+                  <span class="pill pill--success">распознано</span>
+                  <span class="pill pill--success">синхронизировано</span>
+                </p>
               </article>
             </li>
             <li>
               <article class="record-card" aria-labelledby="rec-2-title">
-                <header>
-                  <p class="record-course">Физика</p>
-                  <h3 id="rec-2-title"><a href="record.html?id=2">Семинар 4. Колебания</a></h3>
+                <header class="record-card__header">
+                  <p class="record-card__course">Физика</p>
+                  <h3 id="rec-2-title" class="record-card__title"><a class="record-card__link" href="record.html?id=2">Семинар 4. Колебания</a></h3>
                 </header>
                 <dl class="record-meta">
-                  <div><dt>Дата</dt><dd><time datetime="2026-10-08">08.10.2026</time></dd></div>
-                  <div><dt>Длительность</dt><dd><time datetime="PT11M20S">11:20</time></dd></div>
-                  <div><dt>Закладки</dt><dd>0</dd></div>
+                  <div class="record-meta__item"><dt>Дата</dt><dd><time datetime="2026-10-08">08.10.2026</time></dd></div>
+                  <div class="record-meta__item"><dt>Длительность</dt><dd><time datetime="PT11M20S">11:20</time></dd></div>
+                  <div class="record-meta__item"><dt>Закладки</dt><dd>0</dd></div>
                 </dl>
-                <p class="record-status">
-                  <label for="rec-2-progress">Распознаётся: фрагмент 19 из 30</label>
-                  <progress id="rec-2-progress" max="30" value="19">19 из 30</progress>
+                <p class="record-card__status">
+                  <span class="visually-hidden">Статус:</span>
+                  <span class="pill pill--progress">распознаётся</span>
+                  <span class="pill">только на этом устройстве</span>
+                </p>
+                <p class="record-card__progress">
+                  <label class="record-card__progress-label" for="rec-2-progress">Фрагмент 19 из 30</label>
+                  <progress class="progress" id="rec-2-progress" max="30" value="19">19 из 30</progress>
                 </p>
               </article>
             </li>
             <li>
               <article class="record-card" aria-labelledby="rec-3-title">
-                <header>
-                  <p class="record-course">История</p>
-                  <h3 id="rec-3-title"><a href="record.html?id=3">Лекция 3. Реформы 1860-х</a></h3>
+                <header class="record-card__header">
+                  <p class="record-card__course">История</p>
+                  <h3 id="rec-3-title" class="record-card__title"><a class="record-card__link" href="record.html?id=3">Лекция 3. Реформы 1860-х</a></h3>
                 </header>
                 <dl class="record-meta">
-                  <div><dt>Дата</dt><dd><time datetime="2026-10-02">02.10.2026</time></dd></div>
-                  <div><dt>Длительность</dt><dd><time datetime="PT9M5S">09:05</time></dd></div>
-                  <div><dt>Закладки</dt><dd>1</dd></div>
+                  <div class="record-meta__item"><dt>Дата</dt><dd><time datetime="2026-10-02">02.10.2026</time></dd></div>
+                  <div class="record-meta__item"><dt>Длительность</dt><dd><time datetime="PT9M5S">09:05</time></dd></div>
+                  <div class="record-meta__item"><dt>Закладки</dt><dd>1</dd></div>
                 </dl>
-                <p class="record-status">Статус: из субтитров · только на этом устройстве</p>
+                <p class="record-card__status">
+                  <span class="visually-hidden">Статус:</span>
+                  <span class="pill pill--success">из субтитров</span>
+                  <span class="pill">только на этом устройстве</span>
+                </p>
               </article>
             </li>
           </ul>
         </section>
 
-        <section id="import" aria-labelledby="import-title">
-          <h2 id="import-title">Новая запись</h2>
-          <p>Файл обрабатывается на этом устройстве и не загружается на сервер.</p>
+        <section id="import" class="import" aria-labelledby="import-title">
+          <h2 id="import-title" class="section-title">Новая запись</h2>
+          <p class="import__lead">Файл обрабатывается на этом устройстве и не загружается на сервер.</p>
           <form class="import-form" action="#" method="post" enctype="multipart/form-data">
-            <p>
-              <label for="audio-file">Аудиофайл (MP3, M4A, WAV, OGG, до 200 МБ)</label>
-              <input id="audio-file" name="audio" type="file" accept=".mp3,.m4a,.wav,.ogg,audio/*" required>
+            <p class="form-field form-field--file">
+              <label class="form-field__label" for="audio-file">Аудиофайл (MP3, M4A, WAV, OGG, до 200 МБ)</label>
+              <input class="form-field__control" id="audio-file" name="audio" type="file" accept=".mp3,.m4a,.wav,.ogg,audio/*" required>
             </p>
-            <p>
-              <label for="record-title">Название записи</label>
-              <input id="record-title" name="title" type="text" placeholder="Например: Матанализ. Лекция 7">
+            <p class="form-field">
+              <label class="form-field__label" for="record-title">Название записи</label>
+              <input class="form-field__control" id="record-title" name="title" type="text" placeholder="Например: Матанализ. Лекция 7">
             </p>
-            <fieldset>
-              <legend>Как получить текст</legend>
-              <p>
-                <input id="method-asr" name="method" type="radio" value="asr" checked>
-                <label for="method-asr">Распознать в браузере</label>
+            <fieldset class="choice-group">
+              <legend class="choice-group__legend">Как получить текст</legend>
+              <p class="choice">
+                <input class="choice__input" id="method-asr" name="method" type="radio" value="asr" checked>
+                <label class="choice__label" for="method-asr">Распознать в браузере</label>
               </p>
-              <p>
-                <input id="method-subtitles" name="method" type="radio" value="subtitles">
-                <label for="method-subtitles">Загрузить готовые субтитры (SRT или VTT)</label>
+              <p class="choice">
+                <input class="choice__input" id="method-subtitles" name="method" type="radio" value="subtitles">
+                <label class="choice__label" for="method-subtitles">Загрузить готовые субтитры (SRT или VTT)</label>
               </p>
             </fieldset>
-            <p><button type="submit">Начать распознавание</button></p>
+            <p class="import-form__actions"><button class="button button--primary" type="submit">Начать распознавание</button></p>
           </form>
         </section>
       </div>
 
-      <aside class="layout-aside" aria-label="Состояние приложения">
-        <section aria-labelledby="storage-title">
-          <h2 id="storage-title">Хранилище браузера</h2>
-          <p>
+      <aside class="layout__aside" aria-label="Состояние приложения">
+        <section class="panel" aria-labelledby="storage-title">
+          <h2 id="storage-title" class="panel__title">Хранилище браузера</h2>
+          <p class="panel__text">
             <label for="storage-usage">Занято 212 МБ из ~2 ГБ</label>
-            <meter id="storage-usage" min="0" max="2048" value="212" low="1400" high="1800" optimum="0">212 МБ</meter>
+            <meter class="meter" id="storage-usage" min="0" max="2048" value="212" low="1400" high="1800" optimum="0">212 МБ</meter>
           </p>
         </section>
 
-        <section aria-labelledby="sync-title">
-          <h2 id="sync-title">Синхронизация</h2>
-          <p>Подключено 2 устройства. На сервер передаётся только текст расшифровок и закладки.</p>
-          <p><a href="devices.html">Управлять устройствами</a></p>
+        <section class="panel" aria-labelledby="sync-title">
+          <h2 id="sync-title" class="panel__title">Синхронизация</h2>
+          <p class="panel__text">Подключено 2 устройства. На сервер передаётся только текст расшифровок и закладки.</p>
+          <p class="panel__text"><a class="button button--secondary button--small" href="devices.html">Управлять устройствами</a></p>
         </section>
 
-        <section aria-labelledby="how-title">
-          <h2 id="how-title">Как это работает</h2>
-          <ol>
+        <section class="panel" aria-labelledby="how-title">
+          <h2 id="how-title" class="panel__title">Как это работает</h2>
+          <ol class="steps">
             <li>Откройте аудиозапись лекции.</li>
             <li>Дождитесь расшифровки в браузере.</li>
             <li>Найдите тему поиском и перейдите к моменту в аудио.</li>
@@ -148,14 +168,14 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p>StudyCast — учебный проект. Аудиозаписи не покидают ваше устройство.</p>
+    <div class="container site-footer__inner">
+      <p class="site-footer__text">StudyCast — учебный проект. Аудиозаписи не покидают ваше устройство.</p>
       <nav aria-label="Дополнительные ссылки">
-        <ul class="nav-list">
+        <ul class="site-footer__links">
           <li><a href="https://github.com/SkyFallen196/StudyCast">Исходный код на GitHub</a></li>
         </ul>
       </nav>
-      <p><small>© 2026 Горбунов Денис</small></p>
+      <p class="site-footer__copy"><small>© 2026 Горбунов Денис</small></p>
     </div>
   </footer>
 </body>
