@@ -8,7 +8,8 @@ React 18 + Vite + TypeScript. Первая версия MVP (ЛР6): работ�
 cd frontend
 npm install
 npm run dev        # http://localhost:5173
-npm test           # unit-тесты Vitest: субтитры, поиск, экспорт, время
+npm test           # unit-тесты Vitest: субтитры, поиск, экспорт, время, нарезка
+npm run test:e2e   # e2e-тесты Playwright (нужен npx playwright install chromium)
 npm run build      # проверка типов и production-сборка в dist/
 ```
 

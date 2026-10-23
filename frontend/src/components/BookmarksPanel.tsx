@@ -48,7 +48,13 @@ function BookmarkItem({ bookmark, text, onSeek, onNoteChange, onDelete }: Bookma
   const [saved, setSaved] = useState(false);
   const noteId = `note-${bookmark.id}`;
 
-  useEffect(() => setNote(bookmark.note), [bookmark.note]);
+  // Автосохранение через 0,4 с после ввода: заметка не теряется, даже если сразу закрыть вкладку.
+  // Состояние из базы обратно в поле не синхронизируется — иначе сохранение старой версии затирало бы набранный текст.
+  useEffect(() => {
+    if (note === bookmark.note) return;
+    const timer = setTimeout(save, 400);
+    return () => clearTimeout(timer);
+  }, [note, bookmark.note]);
 
   function save() {
     if (note === bookmark.note) return;

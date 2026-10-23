@@ -10,7 +10,7 @@ import BookmarksPanel from '../components/BookmarksPanel';
 import ExportDialog from '../components/ExportDialog';
 import TranscriptionStatus from '../components/TranscriptionStatus';
 import {
-  addBookmark, deleteBookmark, getAudio, getBookmarks, getRecord, getSegments, replaceSegments, updateBookmarkNote,
+  deleteBookmark, getAudio, getBookmarks, getRecord, getSegments, replaceSegments, toggleBookmark, updateBookmarkNote,
 } from '../services/storage';
 import { startTranscription, useTranscriptionJob } from '../services/transcription';
 import { findMatches, type TextMatch } from '../lib/search';
@@ -108,14 +108,7 @@ export default function RecordPage() {
 
   const onSegmentClick = useCallback((segment: Segment) => seek(segment.start, true), [seek]);
 
-  const onToggleBookmark = useCallback(
-    async (segment: Segment) => {
-      const existing = bookmarks.find((b) => b.segmentId === segment.id);
-      if (existing) await deleteBookmark(existing.id);
-      else await addBookmark(segment);
-    },
-    [bookmarks],
-  );
+  const onToggleBookmark = useCallback((segment: Segment) => toggleBookmark(segment), []);
 
   async function onSubtitles(file: File) {
     const error = validateSubtitleFile(file);

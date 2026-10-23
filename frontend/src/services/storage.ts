@@ -131,6 +131,18 @@ export async function addBookmark(segment: Segment): Promise<Bookmark> {
   return bookmark;
 }
 
+/**
+ * Ставит или снимает закладку на фразе. Проверка и запись идут в одной транзакции: при быстром двойном клике
+ * второй вызов видит результат первого и не создаёт дубликат.
+ */
+export function toggleBookmark(segment: Segment) {
+  return db.transaction('rw', db.bookmarks, async () => {
+    const existing = await db.bookmarks.where('segmentId').equals(segment.id).first();
+    if (existing) await db.bookmarks.delete(existing.id);
+    else await addBookmark(segment);
+  });
+}
+
 export function updateBookmarkNote(id: string, note: string) {
   return db.bookmarks.update(id, { note });
 }
