@@ -146,7 +146,8 @@ export default function RecordPage() {
     );
   }
 
-  const sourceLabel = record.source === 'asr' ? 'распознано в браузере' : 'из субтитров';
+  const sourceLabel =
+    record.source === 'subtitles' ? 'из субтитров' : record.status === 'ready' ? 'распознано в браузере' : 'распознаётся в браузере';
   const step = (delta: number) => matches.length && setMatchIndex((i) => (i + delta + matches.length) % matches.length);
 
   return (
