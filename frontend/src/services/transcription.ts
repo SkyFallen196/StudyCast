@@ -1,11 +1,12 @@
 import { useSyncExternalStore } from 'react';
 import { appendChunkSegments, getAudio, getRecord, updateRecord } from './storage';
 import { hasWebGPU } from '../lib/audio';
+import { splitOnPauses } from '../lib/chunks';
 import type { SegmentDraft } from '../types';
 import type { WorkerRequest, WorkerResponse } from '../workers/asr.protocol';
 
 /**
- * TranscriptionService (FE-020, FE-021): декодирует аудио, режет на 30-секундные фрагменты
+ * TranscriptionService (FE-020, FE-021): декодирует аудио, режет на фрагменты до 30 секунд по паузам
  * и по одному отправляет их в Web Worker. После каждого фрагмента текст и прогресс сохраняются
  * в IndexedDB — при закрытии вкладки распознанная часть не теряется, а работа продолжается с того же фрагмента.
  */
@@ -101,8 +102,8 @@ async function run(recordId: string) {
   try {
     setJob(recordId, { phase: 'decoding' });
     const samples = await decodeAudio(blob);
-    const chunkSize = SAMPLE_RATE * CHUNK_SECONDS;
-    const total = Math.max(1, Math.ceil(samples.length / chunkSize));
+    const chunks = splitOnPauses(samples, SAMPLE_RATE, CHUNK_SECONDS);
+    const total = chunks.length;
     const device = (await hasWebGPU()) ? 'webgpu' : 'wasm';
     await updateRecord(recordId, { status: 'transcribing', totalChunks: total, error: undefined });
 
@@ -114,8 +115,8 @@ async function run(recordId: string) {
     for (let i = record.processedChunks; i < total; i++) {
       if (cancelled.has(recordId)) return;
       if (modelReady) setJob(recordId, { phase: 'transcribing', chunk: i, total });
-      const piece = samples.slice(i * chunkSize, (i + 1) * chunkSize);
-      const segments = await transcribeChunk(piece, i * CHUNK_SECONDS, device);
+      const { start, end } = chunks[i];
+      const segments = await transcribeChunk(samples.slice(start, end), start / SAMPLE_RATE, device);
       modelReady = true;
       if (cancelled.has(recordId)) return;
       await appendChunkSegments(recordId, segments, i + 1);

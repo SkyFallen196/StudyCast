@@ -24,6 +24,8 @@ function load(device: 'webgpu' | 'wasm') {
   asr = createPipeline('automatic-speech-recognition', MODEL, {
     device,
     dtype: device === 'webgpu' ? { encoder_model: 'fp32', decoder_model_merged: 'q4' } : 'q8',
+    // onnxruntime пишет служебные предупреждения о распределении узлов через console.error — оставляем только ошибки
+    session_options: { logSeverityLevel: 3 },
     progress_callback: (info: { status: string; file?: string; loaded?: number; total?: number }) => {
       if (info.status !== 'progress' || !info.file || !info.total) return;
       files.set(info.file, { loaded: info.loaded ?? 0, total: info.total });

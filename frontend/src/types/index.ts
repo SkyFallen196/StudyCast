@@ -19,7 +19,7 @@ export interface LectureRecord {
   language: string;
   source: RecordSource;
   status: RecordStatus;
-  /** Сколько 30-секундных фрагментов уже распознано — для прогресса и возобновления. */
+  /** Сколько фрагментов (до 30 секунд) уже распознано — для прогресса и возобновления. */
   processedChunks: number;
   totalChunks: number;
   error?: string;

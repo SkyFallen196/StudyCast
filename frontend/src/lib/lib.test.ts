@@ -3,6 +3,7 @@ import { parseSubtitles, SubtitleParseError } from './subtitles';
 import { findMatches, includesText } from './search';
 import { formatSrtTime, formatTime } from './time';
 import { fileNameFor, toMarkdown, toSrt } from './export';
+import { splitOnPauses } from './chunks';
 import type { Bookmark, LectureRecord, Segment } from '../types';
 
 describe('parseSubtitles', () => {
@@ -83,5 +84,25 @@ describe('export', () => {
 
   it('убирает из имени файла недопустимые символы', () => {
     expect(fileNameFor('Лекция 7: ряды?', 'md')).toBe('Лекция 7 ряды.md');
+  });
+});
+
+describe('splitOnPauses', () => {
+  const rate = 100;
+
+  it('ставит границу в тишине и покрывает всё аудио без пропусков', () => {
+    const samples = new Float32Array(70 * rate).fill(0.5);
+    samples.fill(0, 24 * rate, 25 * rate); // пауза на 24–25 с
+    const chunks = splitOnPauses(samples, rate);
+    expect(chunks[0].start).toBe(0);
+    expect(chunks[0].end).toBeGreaterThanOrEqual(24 * rate);
+    expect(chunks[0].end).toBeLessThanOrEqual(25 * rate);
+    chunks.slice(1).forEach((c, i) => expect(c.start).toBe(chunks[i].end));
+    expect(chunks.at(-1)!.end).toBe(samples.length);
+    chunks.forEach((c) => expect(c.end - c.start).toBeLessThanOrEqual(30 * rate));
+  });
+
+  it('короткая запись — один фрагмент', () => {
+    expect(splitOnPauses(new Float32Array(10 * rate), rate)).toEqual([{ start: 0, end: 10 * rate }]);
   });
 });
