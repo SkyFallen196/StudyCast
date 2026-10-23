@@ -1,0 +1,422 @@
+/* ==========================================================================
+   StudyCast — экран записи: плеер, поиск, транскрипт, закладки, экспорт
+   Макет: Figma, экраны «Запись» (1280 px) и «Запись, телефон» (390 px).
+   ========================================================================== */
+
+.loading-text {
+  color: var(--color-muted);
+}
+
+.success-text {
+  color: var(--color-sync);
+  font-size: 0.875rem;
+}
+
+.record-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.record-layout__main {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+/* На телефоне плеер и поиск закреплены под шапкой (ТЗ 9.4) */
+.record-layout__player {
+  position: sticky;
+  top: 3.6rem;
+  z-index: 3;
+  display: grid;
+  gap: var(--space-2);
+  margin-inline: calc(-1 * var(--space-2));
+  padding: var(--space-2);
+  background: var(--color-paper);
+}
+
+/* Плеер */
+.player {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "toggle timeline"
+    "time rate";
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.player__toggle {
+  grid-area: toggle;
+  display: grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  cursor: pointer;
+}
+
+.player__timeline {
+  grid-area: timeline;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--control-height);
+}
+
+.player__markers {
+  position: absolute;
+  inset: 0.25rem 0 auto;
+  pointer-events: none;
+}
+
+.player__marker {
+  position: absolute;
+  top: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: -0.25rem;
+  border-radius: 50%;
+  background: var(--color-sync);
+}
+
+.player__range {
+  width: 100%;
+  height: 0.25rem;
+  margin: 0;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--color-accent) var(--progress, 0%), var(--color-skeleton) var(--progress, 0%));
+  appearance: none;
+  cursor: pointer;
+}
+
+.player__range::-webkit-slider-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-accent);
+  appearance: none;
+}
+
+.player__range::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.player__time {
+  grid-area: time;
+  color: var(--color-muted);
+  font: 0.8125rem var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.player__rate {
+  grid-area: rate;
+  justify-self: end;
+  min-width: var(--control-height);
+  min-height: 2rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-muted);
+  font: 0.75rem var(--font-mono);
+  cursor: pointer;
+}
+
+/* Поиск по транскрипту */
+.transcript-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding-right: var(--space-1);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.transcript-search:focus-within {
+  border-color: var(--color-accent);
+}
+
+.transcript-search__input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--control-height);
+  padding: 0 var(--space-3) 0 2.25rem;
+  border: 0;
+  border-radius: var(--radius-card);
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Ccircle cx='7' cy='7' r='4.8' stroke='%235F5B54' stroke-width='1.6'/%3E%3Cpath d='M10.6 10.6 14 14' stroke='%235F5B54' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 0.75rem center;
+  outline: none;
+}
+
+.transcript-search__counter {
+  color: var(--color-accent);
+  font: 0.75rem var(--font-mono);
+  white-space: nowrap;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.icon-button:hover:not(:disabled) {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.icon-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Прогресс распознавания */
+.progress-box {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  font-size: 0.875rem;
+}
+
+.progress-box__label {
+  font-weight: 500;
+}
+
+.progress-box__hint {
+  color: var(--color-muted);
+  font-size: 0.8125rem;
+}
+
+/* Транскрипт */
+.transcript {
+  margin: 0;
+  padding: var(--space-1) 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  list-style: none;
+}
+
+.segment {
+  display: flex;
+  align-items: flex-start;
+  border-left: 3px solid transparent;
+  transition: background-color var(--transition);
+}
+
+.segment--active {
+  border-left-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.segment__jump {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-3) var(--space-2) var(--space-3) var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.segment__time {
+  padding-top: 0.2rem;
+  color: var(--color-muted);
+  font: 0.75rem var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.segment--active .segment__time {
+  color: var(--color-accent);
+}
+
+.segment__text {
+  font: 1.0625rem/1.55 var(--font-display);
+}
+
+.segment__bookmark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border: 0;
+  background: transparent;
+  color: var(--color-muted);
+  opacity: 0.45;
+  cursor: pointer;
+}
+
+.segment:hover .segment__bookmark,
+.segment__bookmark:focus-visible,
+.segment__bookmark[aria-pressed="true"] {
+  opacity: 1;
+}
+
+.segment__bookmark[aria-pressed="true"] {
+  color: var(--color-sync);
+}
+
+.match {
+  border-radius: 2px;
+  background: var(--color-highlight);
+  color: inherit;
+}
+
+.match--current {
+  outline: 2px solid var(--color-accent);
+}
+
+/* Закладки */
+.bookmarks__empty {
+  color: var(--color-muted);
+}
+
+.bookmarks__list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bookmark {
+  display: grid;
+  gap: var(--space-2);
+  padding-block: var(--space-3);
+  border-top: 1px solid var(--color-line);
+}
+
+.bookmark:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.bookmark__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bookmark__time,
+.bookmark__delete {
+  min-height: 2rem;
+  padding: 0 var(--space-1);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bookmark__time {
+  margin-left: calc(-1 * var(--space-1));
+  color: var(--color-sync);
+  font: 0.75rem var(--font-mono);
+}
+
+.bookmark__delete {
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
+.bookmark__delete:hover {
+  color: var(--color-danger);
+}
+
+.bookmark__text {
+  color: var(--color-muted);
+  font: 0.875rem/1.45 var(--font-display);
+}
+
+.bookmark__note {
+  width: 100%;
+  min-height: var(--control-height);
+  padding: var(--space-2);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-paper);
+  font: inherit;
+  resize: vertical;
+}
+
+.bookmark__note:focus {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+.bookmark__saved {
+  color: var(--color-sync);
+  font-size: 0.75rem;
+}
+
+/* Экспорт: в модальном окне варианты всегда друг под другом */
+.dialog .choice-group {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-ink);
+}
+
+.checkbox input {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--color-accent);
+}
+
+/* Ноутбук: транскрипт и панель закладок рядом, плеер в одну строку */
+@media (min-width: 64em) {
+  .record-layout {
+    grid-template-columns: minmax(0, 1fr) 18rem;
+  }
+
+  .record-layout__player {
+    top: 4rem;
+  }
+
+  .record-layout__aside {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+  }
+
+  .player {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "toggle timeline time rate";
+  }
+}
+
+@media (min-width: 90em) {
+  .record-layout {
+    grid-template-columns: minmax(0, 1fr) 22rem;
+  }
+}
