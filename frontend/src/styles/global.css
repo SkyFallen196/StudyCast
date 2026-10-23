@@ -29,6 +29,10 @@
   --color-sync: #1f6f5c;
   --color-sync-soft: #dcede7;
   --color-skeleton: #ece9e2;
+  --color-danger: #b3261e;
+  --color-warning-soft: #fbf0d9;
+  --color-warning: #6b4e00;
+  --color-highlight: #f5e2a3;
 
   /* Шрифты */
   --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
@@ -68,6 +72,10 @@
     --color-sync: #6cc3a8;
     --color-sync-soft: #1f3530;
     --color-skeleton: #2e2c28;
+    --color-danger: #f2b8b5;
+    --color-warning-soft: #3a3020;
+    --color-warning: #f0d48a;
+    --color-highlight: #6b5a1e;
   }
 }
 
@@ -866,4 +874,116 @@ img {
 
 .empty-state__action {
   margin-top: var(--space-2);
+}
+
+.pill--error {
+  border-color: transparent;
+  background: var(--color-accent-soft);
+  color: var(--color-danger);
+}
+
+.field-error {
+  color: var(--color-danger);
+  font-size: 0.8125rem;
+}
+
+.button--danger {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--color-accent-ink);
+}
+
+.button--danger:hover {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--color-accent-ink);
+  filter: brightness(0.92);
+}
+
+.button--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-muted);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Скелетон загрузки библиотеки */
+.skeleton {
+  border-radius: var(--radius-card);
+  background: var(--color-skeleton);
+  animation: skeleton-pulse 1.2s ease-in-out infinite alternate;
+}
+
+.skeleton--card {
+  height: 7.5rem;
+  list-style: none;
+}
+
+@keyframes skeleton-pulse {
+  to {
+    opacity: 0.5;
+  }
+}
+
+/* Кнопка удаления поверх кликабельной карточки */
+.record-card {
+  padding-right: 3.5rem;
+}
+
+.record-card__delete {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.record-card__delete:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-danger);
+}
+
+/* Модальное окно */
+.dialog {
+  width: min(28rem, calc(100% - 2rem));
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.dialog::backdrop {
+  background: rgb(26 25 23 / 0.45);
+}
+
+.dialog__title {
+  font-size: 1.25rem;
+}
+
+.dialog__body {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  color: var(--color-muted);
+}
+
+.dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
 }
