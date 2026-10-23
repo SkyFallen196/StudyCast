@@ -39,3 +39,6 @@ htmlcov/
 .env.*
 !.env.example
 *.tsbuildinfo
+
+# Локальные настройки Claude Code
+.claude/
