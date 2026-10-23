@@ -6,6 +6,7 @@ import RecordCard from '../components/RecordCard';
 import EmptyState from '../components/EmptyState';
 import ConfirmDialog from '../components/ConfirmDialog';
 import { countBookmarksByRecord, deleteRecord, findRecordsByText, getStorageEstimate, listRecords } from '../services/storage';
+import { cancelTranscription } from '../services/transcription';
 import { includesText } from '../lib/search';
 import { formatSize } from '../lib/time';
 import type { LectureRecord } from '../types';
@@ -27,6 +28,7 @@ export default function LibraryPage() {
 
   async function confirmDelete() {
     if (!toDelete) return;
+    cancelTranscription(toDelete.id);
     await deleteRecord(toDelete.id);
     setToDelete(null);
   }
