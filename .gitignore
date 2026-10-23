@@ -42,3 +42,6 @@ htmlcov/
 
 # Локальные настройки Claude Code
 .claude/
+
+# onnxruntime РєРѕРїРёСЂСѓРµС‚СЃСЏ РёР· node_modules РїСЂРё dev/build (scripts/copy-ort.mjs)
+frontend/public/ort/

@@ -1,5 +1,5 @@
 /// <reference lib="webworker" />
-import { pipeline, type AutomaticSpeechRecognitionPipeline } from '@huggingface/transformers';
+import { env, pipeline, type AutomaticSpeechRecognitionPipeline } from '@huggingface/transformers';
 import type { WorkerRequest, WorkerResponse } from './asr.protocol';
 
 /**
@@ -10,6 +10,10 @@ import type { WorkerRequest, WorkerResponse } from './asr.protocol';
 const MODEL = 'onnx-community/whisper-tiny';
 
 const ctx = self as unknown as DedicatedWorkerGlobalScope;
+
+// Среда выполнения onnxruntime раздаётся со своего домена (public/ort/, см. scripts/copy-ort.mjs), а не с CDN jsdelivr
+const onnxWasm = env.backends.onnx.wasm;
+if (onnxWasm) onnxWasm.wasmPaths = `${import.meta.env.BASE_URL}ort/`;
 let asr: Promise<AutomaticSpeechRecognitionPipeline> | null = null;
 
 function post(message: WorkerResponse) {
